@@ -1,3 +1,3 @@
 # glow_fit_app
 
-A new Flutter project.
+This is an example text test
