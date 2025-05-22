@@ -1,0 +1,33 @@
+name: glow_fit_app
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  #State Management Bloc/Cubit
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
+  #To compare states
+  equatable: ^2.0.7
+  #SQLite with multiplatfom support
+  sqflite: ^2.4.2
+  path_provider: ^2.1.5
+  #Dependency Injection
+  get_it: ^8.0.3
+  #Navigation
+  go_router: ^15.1.2
+  #Firebase
+  firebase_core: ^2.30.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

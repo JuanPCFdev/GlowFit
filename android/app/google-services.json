@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "883615972336",
+    "project_id": "fir-lite-2a971",
+    "storage_bucket": "fir-lite-2a971.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883615972336:android:645650502ef6aa8b9fbb35",
+        "android_client_info": {
+          "package_name": "com.example.glow_fit_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwfQ8VLXKrxTmGe2mGlh_WBZkc_S9hijY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883615972336:android:9aa50fc1b663eea69fbb35",
+        "android_client_info": {
+          "package_name": "com.jpdev.firebaselite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwfQ8VLXKrxTmGe2mGlh_WBZkc_S9hijY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
