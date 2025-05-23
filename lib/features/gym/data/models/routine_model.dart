@@ -1,30 +1,43 @@
-import 'package:glow_fit_app/features/gym/data/models/exercise_model.dart';
-import 'package:glow_fit_app/features/gym/domain/entities/routine.dart';
 
-class RoutineModel extends Routine {
-  RoutineModel({
-    required super.name,
-    required super.description,
-    required super.dayOfWeek,
-    required super.exercises,
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class RoutineModel {
+  final String id;
+  final String userId; // Para relacionar con el usuario
+  final String name;
+  final String description;
+  final String dayOfWeek;
+
+// Nota: Los ejercicios se obtienen de la subcolección "exercises", no se incluyen aquí.
+// Si necesitas cargar ejercicios con la rutina, hazlo en una consulta separada.
+
+RoutineModel({
+    required this.id,
+    required this.userId,
+    required this.name,
+    required this.description,
+    required this.dayOfWeek,
   });
 
-  factory RoutineModel.fromJson(Map<String, dynamic> json) {
+  // Desde Firestore
+  factory RoutineModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return RoutineModel(
-      name: json['name'],
-      description: json['description'],
-      dayOfWeek: json['dayOfWeek'],
-      exercises:
-          (json['exercises'] as List)
-              .map((e) => ExerciseModel.fromJson(e))
-              .toList(),
+      id: doc.id,
+      userId: doc.reference.parent.parent?.id ?? '', // Obtiene el userId de la jerarquía users/{userId}/routines
+      name: data['name'] ?? 'Sin nombre',
+      description: data['description'] ?? '',
+      dayOfWeek: data['dayOfWeek'] ?? 'lunes',
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'description': description,
-    'dayOfWeek': dayOfWeek,
-    'exercises': exercises.map((e) => (e as ExerciseModel).toJson()).toList(),
-  };
+  // Para Firestore
+  Map<String, dynamic> toFirestore() {
+    return {
+      'name': name,
+      'description': description,
+      'dayOfWeek': dayOfWeek,
+    };
+  }
+
 }

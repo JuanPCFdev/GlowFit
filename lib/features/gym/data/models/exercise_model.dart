@@ -1,36 +1,60 @@
-import 'package:glow_fit_app/features/gym/data/models/muscle_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/exercise.dart';
 
-class ExerciseModel extends Exercise {
+class ExerciseModel {
+  final String id;
+  final String type;
+  final String name;
+  final String description;
+  final String image;
+  final String difficulty;
+  final int series;
+  final int reps;
+  final double weight;
+  final List<String> muscles;
+
   ExerciseModel({
-    required super.type,
-    required super.name,
-    required super.description,
-    required super.image,
-    required super.difficulty,
-    required super.muscles,
+    required this.id,
+    required this.type,
+    required this.name,
+    required this.description,
+    required this.image,
+    required this.difficulty,
+    required this.series,
+    required this.reps,
+    required this.weight,
+    required this.muscles,
   });
 
-  factory ExerciseModel.fromJson(Map<String, dynamic> json) {
+  factory ExerciseModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return ExerciseModel(
-      type: json['type'],
-      name: json['name'],
-      description: json['description'],
-      image: json['image'],
-      difficulty: json['difficulty'],
-      muscles:
-          (json['muscles'] as List)
-              .map((m) => MuscleModel.fromJson(m))
-              .toList(),
+      id: doc.id,
+      type: data['type'] ?? 'strength',
+      name: data['name'] ?? '',
+      description: data['description'] ?? '',
+      image: data['image'] ?? '',
+      difficulty: data['difficulty'] ?? 'beginner',
+      series: data['series'] ?? 0,
+      reps: data['reps'] ?? 0,
+      weight: data['weight']?.toDouble() ?? 0.0,
+      muscles: List<String>.from(data['muscles'] ?? []),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'type': type,
-    'name': name,
-    'description': description,
-    'image': image,
-    'difficulty': difficulty,
-    'muscles': muscles.map((m) => (m as MuscleModel).toJson()).toList(),
-  };
+  Exercise toDomainExercise(ExerciseModel model){
+    return Exercise(
+      id: model.id, 
+      type: model.type, 
+      name: model.name, 
+      description: model.description, 
+      image: model.image, 
+      difficulty: model.difficulty, 
+      series: model.series, 
+      reps: model.reps, 
+      weight: model.weight, 
+      muscles: model.muscles
+      );
+  }
+
 }

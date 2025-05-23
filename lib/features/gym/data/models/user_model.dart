@@ -1,42 +1,62 @@
-import 'package:glow_fit_app/features/gym/data/models/routine_model.dart';
-import 'package:glow_fit_app/features/gym/domain/entities/user.dart';
 
-class UserModel extends User {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class UserModel {
+  final String id;
+  final String name;
+  final String email;
+  final double weight;
+  final double height;
+  final String gender;
+  final int age;
+
   UserModel({
-    required super.name,
-    required super.email,
-    required super.password,
-    required super.weight,
-    required super.height,
-    required super.gender,
-    required super.age,
-    required super.routines,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.weight,
+    required this.height,
+    required this.gender,
+    required this.age,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      name: json['name'],
-      email: json['email'],
-      password: json['password'],
-      weight: json['weight'].toDouble(),
-      height: json['height'].toDouble(),
-      gender: json['gender'],
-      age: json['age'],
-      routines:
-          (json['routines'] as List)
-              .map((r) => RoutineModel.fromJson(r))
-              .toList(),
+  // Desde Firestore
+  factory UserModel.fromFirestore(DocumentSnapshot doc) {
+
+    if (!doc.exists) {
+      throw Exception('El usuario no existe en Firestore');
+    }
+
+    final data = doc.data();
+
+    if (data == null) {
+      throw Exception('Los datos del usuario están vacíos');
+    }
+
+    // Cast seguro usando 'as?' y verificación de tipos
+    final userData = data as Map<String, dynamic>? ?? {};
+
+   return UserModel(
+    id: doc.id,
+    name: userData['name'] ?? 'Nombre no definido',
+    email: userData['email'] ?? '',
+    weight: (userData['weight'] as num?)?.toDouble() ?? 0.0,
+    height: (userData['height'] as num?)?.toDouble() ?? 0.0,
+    gender: userData['gender'] ?? 'other',
+    age: userData['age'] ?? 0,
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'email': email,
-    'password': password,
-    'weight': weight,
-    'height': height,
-    'gender': gender,
-    'age': age,
-    'routines': routines.map((r) => (r as RoutineModel).toJson()).toList(),
-  };
+  // Para Firestore
+  Map<String, dynamic> toFirestore() {
+    return {
+      'name': name,
+      'email': email,
+      'weight': weight,
+      'height': height,
+      'gender': gender,
+      'age': age,
+    };
+  }
+  
 }
