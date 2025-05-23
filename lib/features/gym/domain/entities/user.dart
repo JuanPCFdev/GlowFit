@@ -1,9 +1,9 @@
 import 'package:glow_fit_app/features/gym/domain/entities/routine.dart';
 
 class User {
+  final String id;
   final String name;
   final String email;
-  final String password;
   final double weight;
   final double height;
   final String gender;
@@ -11,9 +11,9 @@ class User {
   final List<Routine> routines;
 
   const User({
+    required this.id,
     required this.name,
     required this.email,
-    required this.password,
     required this.weight,
     required this.height,
     required this.gender,
