@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'fir-lite-2a971.firebasestorage.app',
     iosBundleId: 'com.example.glowFitApp',
   );
+
 }

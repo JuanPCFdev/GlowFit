@@ -1,4 +1,4 @@
-import 'package:glow_fit_app/features/gym/domain/entities/routine.dart';
+import 'package:glow_fit_app/features/gym/domain/entities/enums.dart';
 
 class User {
   final String id;
@@ -6,9 +6,9 @@ class User {
   final String email;
   final double weight;
   final double height;
-  final String gender;
+  final Gender gender;
   final int age;
-  final List<Routine> routines;
+  final List<String> routineIds;
 
   const User({
     required this.id,
@@ -18,6 +18,6 @@ class User {
     required this.height,
     required this.gender,
     required this.age,
-    required this.routines,
+    required this.routineIds,
   });
 }

@@ -9,12 +9,10 @@ void main() async {
 }
 
 class MainApp extends StatelessWidget {
-  MainApp({super.key});
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Login(),
-    );
+    return const MaterialApp(home: Login(), debugShowCheckedModeBanner: false);
   }
 }

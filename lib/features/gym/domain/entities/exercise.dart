@@ -1,16 +1,18 @@
-class Exercise {
+import 'package:glow_fit_app/features/gym/domain/entities/enums.dart';
+
+class RoutineExercise {
   final String id;
-  final String type;
   final String name;
+  final ExerciseType type;
   final String description;
   final String image;
-  final String difficulty;
+  final Difficulty difficulty;
   final int series;
   final int reps;
   final double weight;
   final List<String> muscles;
 
-  const Exercise({
+  const RoutineExercise({
     required this.id,
     required this.type,
     required this.name,
