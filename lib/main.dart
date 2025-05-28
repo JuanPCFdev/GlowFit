@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:glow_fit_app/features/gym/presentation/layouts/Login/login.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'app_router.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -17,10 +18,36 @@ void main() async {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
+
+  // Configuración del tema de la aplicación
+  final ThemeData theme = ThemeData(
+    textTheme: GoogleFonts.poppinsTextTheme(const TextTheme()),
+    primaryTextTheme: GoogleFonts.poppinsTextTheme(const TextTheme()),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        textStyle: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: Login(), debugShowCheckedModeBanner: false);
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: theme,
+      routerConfig: AppRouter.router,
+    );
   }
 }
