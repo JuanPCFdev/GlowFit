@@ -11,12 +11,15 @@ void setUpDataDependencies() {
   GetIt.I.registerLazySingleton<AuthDataSource>(() => AuthDataSource());
   GetIt.I.registerLazySingleton<GymDataSource>(() => GymDataSource());
 
-  //Repositories
+  //AuthRepository
   GetIt.I.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(GetIt.I<AuthDataSource>()),
+    () =>
+        AuthRepositoryImpl(GetIt.I<AuthDataSource>(), GetIt.I<GymDataSource>()),
   );
 
+  //GymRepository
   GetIt.I.registerLazySingleton<GymRepository>(
-    () => GymRepositoryImpl(GetIt.I<GymDataSource>()),
+    () =>
+        GymRepositoryImpl(GetIt.I<GymDataSource>(), GetIt.I<AuthDataSource>()),
   );
 }

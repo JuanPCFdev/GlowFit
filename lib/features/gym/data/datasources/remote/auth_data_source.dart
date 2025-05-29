@@ -1,28 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart' as firebase;
-import 'package:glow_fit_app/features/gym/domain/mappers/user_mapper.dart';
-import 'package:glow_fit_app/features/gym/domain/entities/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthDataSource {
-  final firebase.FirebaseAuth _auth = firebase.FirebaseAuth.instance;
-
-  //To get the current user
-  Future<User?> getCurrentUser() async {
-    final firebaseUser = _auth.currentUser;
-    if (firebaseUser == null) return null;
-    return UserMapper.fromFirebase(firebaseUser);
-  }
-
-  //To create a new user
-  Future<void> signUpWithEmailAndPassword(String email, String password) async {
-    await _auth.createUserWithEmailAndPassword(
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //To get the current user (return a user of firebase)
+  Future<User?> getCurrentUser() async => _auth.currentUser;
+  //To register a new user
+  Future<UserCredential> signUpWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    return await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
-  Future<void> signInWithEmail(String email, String password) async {
+  //Sign in with email and password
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
+  //Sign out
   Future<void> signOut() async => await _auth.signOut();
+  //Listen auth changes
+  Stream<User?> authStateChanges() => _auth.authStateChanges();
 }

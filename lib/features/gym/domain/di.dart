@@ -1,39 +1,67 @@
 import 'package:get_it/get_it.dart';
 import 'package:glow_fit_app/features/gym/domain/repositories/gym_repository.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/auth/get_current_user.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/auth/sign_out.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/auth/sign_up_with_email.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/auth/get_auth_user_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/auth/sign_out_use_case.dart';
 import 'package:glow_fit_app/features/gym/domain/repositories/auth_repository.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/auth/sign_in_with_email.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/gym/get_routine.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/gym/get_user.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/gym/save_routine.dart';
-import 'package:glow_fit_app/features/gym/domain/usecases/gym/save_user.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/auth/sign_in_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/auth/sign_up_auth_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/delete_routine_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/get_routine_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/get_data_user_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/save_routine_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/delete_user_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/register_user_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/update_routine_use_case.dart';
+import 'package:glow_fit_app/features/gym/domain/usecases/user/update_user_use_case.dart';
 
 void setupDomainDependencies() {
-  //Auth Use Cases
+  //Sign up
   GetIt.I.registerLazySingleton(
-    () => SignUpWithEmailUseCase(GetIt.I<AuthRepository>()),
+    () => SignUpAuthUseCase(GetIt.I<AuthRepository>()),
   );
+  //Get current Auth User
+  GetIt.I.registerLazySingleton(
+    () => GetAuthUserUseCase(GetIt.I<AuthRepository>()),
+  );
+  //Sign In with auth user
   GetIt.I.registerLazySingleton(
     () => SignInWithEmailUseCase(GetIt.I<AuthRepository>()),
   );
+  //Sign out auth user
   GetIt.I.registerLazySingleton(
     () => SignOutUseCase(GetIt.I<AuthRepository>()),
   );
+
+  //User Use Cases
+  //Register User Use Case
   GetIt.I.registerLazySingleton(
-    () => GetCurrentUserUseCase(GetIt.I<AuthRepository>()),
+    () => RegisterUserUseCase(GetIt.I<GymRepository>()),
+  );
+  //Get User Use Case
+  GetIt.I.registerLazySingleton(() => GetUserUseCase(GetIt.I<GymRepository>()));
+  //Update User Use Case
+  GetIt.I.registerLazySingleton(
+    () => UpdateUserUseCase(GetIt.I<GymRepository>()),
+  );
+  //Delete User usecase
+  GetIt.I.registerLazySingleton(
+    () => DeleteUserUseCase(GetIt.I<GymRepository>()),
   );
 
-  //Gym UseCases
-  GetIt.I.registerLazySingleton(
-    () => SaveUserUseCase(GetIt.I<GymRepository>()),
-  );
-  GetIt.I.registerLazySingleton(() => GetUserUseCase(GetIt.I<GymRepository>()));
+  //Create Routine Use Case
   GetIt.I.registerLazySingleton(
     () => SaveRoutineUseCase(GetIt.I<GymRepository>()),
   );
+  //Get Routine Use Case
   GetIt.I.registerLazySingleton(
     () => GetRoutineUseCase(GetIt.I<GymRepository>()),
+  );
+  //Update Routine Usecase
+  GetIt.I.registerLazySingleton(
+    () => UpdateRoutineUseCase(GetIt.I<GymRepository>()),
+  );
+  //Delete Routine Use Case
+  GetIt.I.registerLazySingleton(
+    () => DeleteRoutineUseCase(GetIt.I<GymRepository>()),
   );
 }

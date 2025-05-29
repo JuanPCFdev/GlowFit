@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCwfQ8VLXKrxTmGe2mGlh_WBZkc_S9hijY',
-    appId: '1:883615972336:android:645650502ef6aa8b9fbb35',
-    messagingSenderId: '883615972336',
-    projectId: 'fir-lite-2a971',
-    storageBucket: 'fir-lite-2a971.firebasestorage.app',
+    apiKey: 'AIzaSyA3ru43FvPzmANR9Xl2NkbGOCTIwGnY2f4',
+    appId: '1:537482626762:android:1d52e31b241c9cbc1bd633',
+    messagingSenderId: '537482626762',
+    projectId: 'glowfit-be817',
+    storageBucket: 'glowfit-be817.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDYNRdu2gDVv2-mAKIkoP8tIpcFOBGLuYw',
-    appId: '1:883615972336:ios:7a28b5d39f7561909fbb35',
-    messagingSenderId: '883615972336',
-    projectId: 'fir-lite-2a971',
-    storageBucket: 'fir-lite-2a971.firebasestorage.app',
+    apiKey: 'AIzaSyCtOXx_DGfGDSV2eTFsGe48WDyZzoBA54s',
+    appId: '1:537482626762:ios:08201929b3fb64601bd633',
+    messagingSenderId: '537482626762',
+    projectId: 'glowfit-be817',
+    storageBucket: 'glowfit-be817.firebasestorage.app',
     iosBundleId: 'com.example.glowFitApp',
   );
 
