@@ -1,1 +1,22 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"fir-lite-2a971","appId":"1:883615972336:android:645650502ef6aa8b9fbb35","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"fir-lite-2a971","configurations":{"android":"1:883615972336:android:645650502ef6aa8b9fbb35","ios":"1:883615972336:ios:7a28b5d39f7561909fbb35"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "glowfit-be817",
+                    "appId": "1:537482626762:android:1d52e31b241c9cbc1bd633",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "glowfit-be817",
+                    "configurations": {
+                        "android": "1:537482626762:android:1d52e31b241c9cbc1bd633",
+                        "ios": "1:537482626762:ios:08201929b3fb64601bd633"
+                    }
+                }
+            }
+        }
+    }
+}
