@@ -1,8 +1,10 @@
 import 'package:glow_fit_app/features/gym/data/datasources/remote/auth_data_source.dart';
 import 'package:glow_fit_app/features/gym/data/datasources/remote/gym_data_source.dart';
 import 'package:glow_fit_app/features/gym/data/remote/dto/user_dto.dart';
+import 'package:glow_fit_app/features/gym/data/remote/mappers/routine_exercise_mapper.dart';
 import 'package:glow_fit_app/features/gym/data/remote/mappers/routine_mapper.dart';
 import 'package:glow_fit_app/features/gym/data/remote/mappers/user_mapper.dart';
+import 'package:glow_fit_app/features/gym/domain/entities/exercise.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/routine.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/user.dart';
 import 'package:glow_fit_app/features/gym/domain/repositories/gym_repository.dart';
@@ -78,5 +80,22 @@ class GymRepositoryImpl implements GymRepository {
   @override
   Future<void> deleteRoutine(String routineId) async {
     await _gymDataSource.deleteRoutine(routineId);
+  }
+
+  //Read Exercise
+  @override
+  Future<RoutineExercise> getRoutineExercises(
+    String routineId,
+    String exerciseId,
+  ) async {
+    final dto = await _gymDataSource.getRoutineExercises(routineId, exerciseId);
+    return RoutineExerciseMapper.toDomain(dto);
+  }
+
+  //Get User Routines
+  @override
+  Future<List<Routine>> getUserRoutines(String userId) async {
+    final routines = await _gymDataSource.getUserRoutines(userId);
+    return routines.map((e) => RoutineMapper.toDomain(e)).toList();
   }
 }

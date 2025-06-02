@@ -1,36 +1,35 @@
+import 'package:glow_fit_app/features/gym/data/remote/dto/exercise_dto.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/enums.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/exercise.dart';
 
 class RoutineExerciseMapper {
-  static RoutineExercise toDomain(Map<String, dynamic> data) {
+  static RoutineExercise toDomain(ExerciseDto dto) {
     return RoutineExercise(
-      id: data['id'],
-      name: data['name'],
-      type: ExerciseType.values.firstWhere((e) => e.name == data['type']),
-      description: data['description'],
-      image: data['image'],
-      difficulty: Difficulty.values.firstWhere(
-        (e) => e.name == data['difficulty'],
-      ),
-      series: data['series'].toInt(),
-      reps: data['reps'].toInt(),
-      weight: data['weight'].toDouble(),
-      muscles: List<String>.from(data['muscules']),
+      id: dto.id,
+      name: dto.name,
+      type: ExerciseType.values.firstWhere((e) => e.name == dto.type),
+      description: dto.description,
+      image: dto.image,
+      difficulty: Difficulty.values.firstWhere((e) => e.name == dto.difficulty),
+      series: dto.series,
+      reps: dto.reps,
+      weight: dto.weight,
+      muscles: dto.muscles,
     );
   }
 
-  static Map<String, dynamic> toMap(RoutineExercise entity) {
-    return {
-      'id': entity.id,
-      'type': entity.type.name,
-      'name': entity.name,
-      'description': entity.description,
-      'image': entity.image,
-      'difficulty': entity.difficulty.name,
-      'series': entity.series,
-      'reps': entity.reps,
-      'weight': entity.weight,
-      'muscules': entity.muscles,
-    };
+  static ExerciseDto toDto(RoutineExercise entity) {
+    return ExerciseDto(
+      id: entity.id,
+      name: entity.name,
+      type: entity.type.name,
+      description: entity.description,
+      image: entity.image,
+      difficulty: entity.difficulty.name,
+      series: entity.series,
+      reps: entity.reps,
+      weight: entity.weight,
+      muscles: entity.muscles,
+    );
   }
 }

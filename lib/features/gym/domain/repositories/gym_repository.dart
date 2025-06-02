@@ -1,4 +1,5 @@
 import 'package:glow_fit_app/features/gym/data/remote/dto/user_dto.dart';
+import 'package:glow_fit_app/features/gym/domain/entities/exercise.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/routine.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/user.dart';
 
@@ -23,4 +24,13 @@ abstract class GymRepository {
 
   //Delete Routine
   Future<void> deleteRoutine(String routineId);
+
+  //Get Routine Exercises
+  Future<RoutineExercise> getRoutineExercises(
+    String routineId,
+    String exerciseId,
+  );
+
+  //Get User Routines
+  Future<List<Routine>> getUserRoutines(String userId);
 }

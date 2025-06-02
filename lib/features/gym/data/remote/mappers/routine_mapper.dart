@@ -11,7 +11,9 @@ class RoutineMapper {
       description: dto.description,
       dayOfWeek: DayOfWeek.values.firstWhere((e) => e.name == dto.dayOfWeek),
       exercises:
-          dto.exercises.map((e) => RoutineExerciseMapper.toDomain(e)).toList(),
+          dto.exercises
+              .map((exerciseDto) => RoutineExerciseMapper.toDomain(exerciseDto))
+              .toList(),
     );
   }
 
@@ -22,7 +24,9 @@ class RoutineMapper {
       description: entity.description,
       dayOfWeek: entity.dayOfWeek.name,
       exercises:
-          entity.exercises.map((e) => RoutineExerciseMapper.toMap(e)).toList(),
+          entity.exercises
+              .map((exercise) => RoutineExerciseMapper.toDto(exercise))
+              .toList(),
     );
   }
 }
