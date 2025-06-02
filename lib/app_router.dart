@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glow_fit_app/features/gym/presentation/layouts/home.dart';
 import 'package:go_router/go_router.dart';
 import 'package:glow_fit_app/features/gym/presentation/layouts/login/login.dart';
 import 'package:glow_fit_app/features/gym/presentation/layouts/register/register.dart';
@@ -8,7 +9,7 @@ import 'package:glow_fit_app/features/gym/presentation/layouts/forms/first_time_
 class AppRouter {
   // Instancia de GoRouter
   static final router = GoRouter(
-    initialLocation: '/first_time_form',
+    initialLocation: '/home',
     routes: [
       // Ruta para la pantalla de inicio de sesión
       GoRoute(
@@ -57,6 +58,25 @@ class AppRouter {
             (context, state) => CustomTransitionPage(
               key: state.pageKey,
               child: const FirstTimeForm(),
+              transitionsBuilder: (
+                context,
+                animation,
+                secondaryAnimation,
+                child,
+              ) {
+                // Sin transición
+                return child;
+              },
+              transitionDuration: Duration.zero,
+            ),
+      ),
+      GoRoute(
+        path: '/home',
+        name: 'home',
+        pageBuilder:
+            (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: const Home(),
               transitionsBuilder: (
                 context,
                 animation,
