@@ -219,19 +219,4 @@ class _LoginState extends State<Login> {
       },
     );
   }
-
-  CustomButton loginButton() {
-    return CustomButton(
-      text: 'Ingresar',
-      onPressed: () {},
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-      fontSize: 24,
-      fontWeight: FontWeight.w600,
-      borderRadius: 8,
-      height: 60,
-      width: double.infinity,
-      padding: EdgeInsets.zero,
-    );
-  }
 }
