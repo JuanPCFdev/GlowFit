@@ -1,20 +1,27 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'app_router.dart';
+import 'package:get_it/get_it.dart';
+import 'core/routes/app_router.dart';
 import 'firebase_options.dart';
+import 'features/gym/data/di_data.dart';
+import 'features/gym/domain/di_domain.dart';
+import 'features/gym/presentation/di_presentation.dart';
+import 'features/gym/presentation/cubits/auth/auth_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  setUpDataDependencies();
+  setupDomainDependencies();
+  setupPresentationDependencies();
   runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
   MainApp({super.key});
 
-  // Configuración del tema de la aplicación
   final ThemeData theme = ThemeData(
     textTheme: GoogleFonts.poppinsTextTheme(const TextTheme()),
     primaryTextTheme: GoogleFonts.poppinsTextTheme(const TextTheme()),
@@ -38,10 +45,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: theme,
-      routerConfig: AppRouter.router,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(create: (context) => GetIt.I<AuthCubit>()),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: theme,
+        routerConfig: goRouter,
+      ),
     );
   }
 }

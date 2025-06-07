@@ -16,12 +16,21 @@ class AuthDataSource {
   }
 
   //Sign in with email and password
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
+  Future<UserCredential> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    return await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   //Sign out
   Future<void> signOut() async => await _auth.signOut();
   //Listen auth changes
   Stream<User?> authStateChanges() => _auth.authStateChanges();
+
+  //Delete user
+  Future<void> deleteUser() async => await _auth.currentUser!.delete();
 }

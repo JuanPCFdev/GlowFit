@@ -4,33 +4,48 @@ import 'package:glow_fit_app/features/gym/domain/entities/routine.dart';
 import 'package:glow_fit_app/features/gym/domain/entities/user.dart';
 
 abstract class GymRepository {
-  //Create User
+  ///CRUD USER OPERATIONS
+  //Crear usuario de tipo entity, no auth
   Future<User> registerUser(String email, String password);
-  //Read User
+  //Leer usuario entity con el id
   Future<User> getUser(String userId);
-  //Update User
+  //Actualizar usuario entity
   Future<void> updateUser(UserDto user);
-  //Delete User
+  //Eliminar usuario entity --> Tambien hay que eliminar sus rutinas y el usuario de auth.
   Future<void> deleteUser(String userId);
 
-  //Create Routine
+  ///CRUD ROUTINE OPERATIONS
+  //Crear rutina
   Future<void> saveRoutine(Routine routine);
 
-  //Read Routine
+  //Leer una rutina
   Future<Routine> getRoutine(String routineId);
 
-  //Update Routine
+  //Leer varias rutinas
+  Future<List<Routine>> getAllUserRoutines(String userId);
+
+  //Actualizar rutina
   Future<void> updateRoutine(Routine routine);
 
-  //Delete Routine
+  //Eliminar rutina
   Future<void> deleteRoutine(String routineId);
 
-  //Get Routine Exercises
-  Future<RoutineExercise> getRoutineExercises(
+  ///CRUD EXERCISE OPERATIONS
+  //Leer un ejercicio
+  Future<RoutineExercise> getRoutineExercise(
     String routineId,
     String exerciseId,
   );
 
-  //Get User Routines
-  Future<List<Routine>> getUserRoutines(String userId);
+  //Leer todos los ejercicios
+  Future<List<RoutineExercise>> getRoutineExercises(String routineId);
+
+  //Editar Ejercicio de rutina
+  Future<void> updateRoutineExercise(
+    RoutineExercise exercise,
+    String routineId,
+  );
+
+  //Eliminar ejercicio de rutina
+  Future<void> deleteRoutineExercise(String routineId, String exerciseId);
 }

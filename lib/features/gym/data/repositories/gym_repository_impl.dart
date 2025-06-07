@@ -15,7 +15,7 @@ class GymRepositoryImpl implements GymRepository {
 
   GymRepositoryImpl(this._gymDataSource, this._dataSource);
 
-  //Create User
+  //Crear usuario
   @override
   Future<User> registerUser(String email, String password) async {
     final credential = await _dataSource.signUpWithEmailAndPassword(
@@ -38,36 +38,48 @@ class GymRepositoryImpl implements GymRepository {
     return UserMapper.toDomain(dto);
   }
 
-  //Read User
+  //Leer Usuario
   @override
   Future<User> getUser(String userId) async {
     final dto = await _gymDataSource.getUser(userId);
     return UserMapper.toDomain(dto);
   }
 
-  //Update User
+  //Actualizar usuario
   @override
   Future<void> updateUser(UserDto user) async {
     await _gymDataSource.updateUser(user);
   }
 
-  //Delete User
+  //Eliminar usuario
   @override
   Future<void> deleteUser(String userId) async {
+    //Eliminamos el usuario del firestore
     await _gymDataSource.deleteUser(userId);
+    //Eliminamos el usuario del auth
+    await _dataSource.deleteUser();
+    //Cerramos la sesion
+    await _dataSource.signOut();
   }
 
-  //Create Routine
+  //Crear Rutina
   @override
   Future<void> saveRoutine(Routine routine) async {
     await _gymDataSource.saveRoutine(RoutineMapper.toDTO(routine));
   }
 
-  //Read Routine
+  //Leer una Rutina
   @override
   Future<Routine> getRoutine(String routineId) async {
     final dto = await _gymDataSource.getRoutine(routineId);
     return RoutineMapper.toDomain(dto);
+  }
+
+  //Leer varias rutinas
+  @override
+  Future<List<Routine>> getAllUserRoutines(String userId) async {
+    final routines = await _gymDataSource.getUserRoutines(userId);
+    return routines.map((e) => RoutineMapper.toDomain(e)).toList();
   }
 
   //Update Routine
@@ -82,20 +94,42 @@ class GymRepositoryImpl implements GymRepository {
     await _gymDataSource.deleteRoutine(routineId);
   }
 
-  //Read Exercise
+  //Leer un solo ejercicio
   @override
-  Future<RoutineExercise> getRoutineExercises(
+  Future<RoutineExercise> getRoutineExercise(
     String routineId,
     String exerciseId,
   ) async {
-    final dto = await _gymDataSource.getRoutineExercises(routineId, exerciseId);
-    return RoutineExerciseMapper.toDomain(dto);
+    final exercise = await _gymDataSource.getSingleRoutineExercise(
+      routineId,
+      exerciseId,
+    );
+    return RoutineExerciseMapper.toDomain(exercise);
   }
 
-  //Get User Routines
+  //Leer todos los ejercicios
   @override
-  Future<List<Routine>> getUserRoutines(String userId) async {
-    final routines = await _gymDataSource.getUserRoutines(userId);
-    return routines.map((e) => RoutineMapper.toDomain(e)).toList();
+  Future<List<RoutineExercise>> getRoutineExercises(String routineId) async {
+    final exercises = await _gymDataSource.getAllRoutineExercises(routineId);
+    return exercises.map((e) => RoutineExerciseMapper.toDomain(e)).toList();
+  }
+
+  //Editar Ejercicio de rutina
+  @override
+  Future<void> updateRoutineExercise(
+    RoutineExercise exercise,
+    String routineId,
+  ) async {
+    final exerciseDto = RoutineExerciseMapper.toDto(exercise);
+    await _gymDataSource.updateRoutineExercise(exerciseDto, routineId);
+  }
+
+  //Eliminar ejercicio
+  @override
+  Future<void> deleteRoutineExercise(
+    String routineId,
+    String exerciseId,
+  ) async {
+    await _gymDataSource.deleteExerciseFromRoutine(routineId, exerciseId);
   }
 }

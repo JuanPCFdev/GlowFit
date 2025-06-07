@@ -6,5 +6,5 @@ class GetRoutineExerciseUseCase {
   GetRoutineExerciseUseCase(this.gymRepository);
 
   Future<RoutineExercise> call(String routineId, String exerciseId) async =>
-      gymRepository.getRoutineExercises(routineId, exerciseId);
+      gymRepository.getRoutineExercise(routineId, exerciseId);
 }

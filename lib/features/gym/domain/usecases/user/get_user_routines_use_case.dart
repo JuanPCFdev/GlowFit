@@ -6,6 +6,6 @@ class GetUserRoutinesUseCase {
   GetUserRoutinesUseCase(this.repository);
 
   Future<List<Routine>> execute(String userId) {
-    return repository.getUserRoutines(userId);
+    return repository.getAllUserRoutines(userId);
   }
 }

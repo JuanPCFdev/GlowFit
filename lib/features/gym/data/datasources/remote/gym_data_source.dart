@@ -37,13 +37,28 @@ class GymDataSource {
         .update(user.toFirestore());
   }
 
-  //Eliminar Usuario
+  //Eliminar Usuario y sus rutinas
   Future<void> deleteUser(String userId) async {
-    await _firestore.collection(userCollectionPath).doc(userId).delete();
+    final userDocRef = _firestore.collection(userCollectionPath).doc(userId);
+    final userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) return;
+
+    final routineIds = (userDoc.data()?['routineIds'] as List<String>?) ?? [];
+
+    final routineDeletions =
+        routineIds
+            .map(
+              (id) =>
+                  _firestore.collection(routineCollectionPath).doc(id).delete(),
+            )
+            .toList();
+
+    await Future.wait([userDocRef.delete(), ...routineDeletions]);
   }
 
   //CRUD RUTINA
-  //Create Routine
+  //Crear una rutina
   Future<void> saveRoutine(RoutineDto routine) async {
     await _firestore
         .collection(routineCollectionPath)
@@ -51,7 +66,7 @@ class GymDataSource {
         .set(routine.toFirestore());
   }
 
-  //Get Routine
+  //Leer una rutina
   Future<RoutineDto> getRoutine(String routineId) async {
     final doc =
         await _firestore.collection(routineCollectionPath).doc(routineId).get();
@@ -61,7 +76,33 @@ class GymDataSource {
     return RoutineDto.fromFirestore(doc.data()!, doc.id);
   }
 
-  //Update Routine
+  //Leer todas las rutinas del usuario
+  Future<List<RoutineDto>> getUserRoutines(String userId) async {
+    final user =
+        await _firestore.collection(userCollectionPath).doc(userId).get();
+
+    if (!user.exists || user.data() == null) {
+      throw Exception('User not found with id $userId');
+    }
+
+    final routineIds = (user.data()?['routineIds'] as List<String>?) ?? [];
+
+    final routines = await Future.wait(
+      routineIds.map(
+        (id) => _firestore.collection(routineCollectionPath).doc(id).get(),
+      ),
+    );
+
+    final validRoutines =
+        routines
+            .where((doc) => doc.exists && doc.data() != null)
+            .map((doc) => RoutineDto.fromFirestore(doc.data()!, doc.id))
+            .toList();
+
+    return validRoutines;
+  }
+
+  //Actualizar una rutina
   Future<void> updateRoutine(RoutineDto routine) async {
     await _firestore
         .collection(routineCollectionPath)
@@ -69,13 +110,13 @@ class GymDataSource {
         .update(routine.toFirestore());
   }
 
-  //Delete Routine
+  //Eliminar una rutina
   Future<void> deleteRoutine(String routineId) async {
     await _firestore.collection(routineCollectionPath).doc(routineId).delete();
   }
 
-  //Get Routine Excersise
-  Future<ExerciseDto> getRoutineExercises(
+  //Leer un ejercicio de rutina
+  Future<ExerciseDto> getSingleRoutineExercise(
     String routineId,
     String exerciseId,
   ) async {
@@ -96,32 +137,48 @@ class GymDataSource {
     return exercise;
   }
 
-  //Get User Routines
-  Future<List<RoutineDto>> getUserRoutines(String userId) async {
-    final snapshot =
-        await _firestore.collection(userCollectionPath).doc(userId).get();
-
-    if (!snapshot.exists || snapshot.data() == null) {
-      throw Exception('User not found with id $userId');
+  //Leer todos los ejercicios de una rutina
+  Future<List<ExerciseDto>> getAllRoutineExercises(String routineId) async {
+    final doc =
+        await _firestore.collection(routineCollectionPath).doc(routineId).get();
+    if (!doc.exists || doc.data() == null) {
+      throw Exception('Routine not found with id $routineId');
     }
+    final routine = RoutineDto.fromFirestore(doc.data()!, doc.id);
+    return routine.exercises;
+  }
 
-    final userRoutinesIds =
-        snapshot.data()!['routineIds'] as List<String>? ?? [];
+  //Editar ejercicio de la rutina
+  Future<void> updateRoutineExercise(
+    ExerciseDto exercise,
+    String routineId,
+  ) async {
+    final routineRef = _firestore
+        .collection(routineCollectionPath)
+        .doc(routineId);
 
-    final routines = await Future.wait(
-      userRoutinesIds.map((routineId) async {
-        final doc =
-            await _firestore
-                .collection(routineCollectionPath)
-                .doc(routineId)
-                .get();
-        if (!doc.exists || doc.data() == null) {
-          throw Exception('Routine not found with id $routineId');
-        }
-        return RoutineDto.fromFirestore(doc.data()!, doc.id);
-      }),
-    );
+    await routineRef.update({
+      'exercises': FieldValue.arrayRemove([exercise.id]),
+    });
 
-    return routines;
+    await routineRef.update({
+      'exercises': FieldValue.arrayUnion([exercise.toFirestore()]),
+    });
+  }
+
+  //Eliminar ejercicio de la rutina
+  Future<void> deleteExerciseFromRoutine(
+    String routineId,
+    String exerciseId,
+  ) async {
+    final routineRef = _firestore
+        .collection(routineCollectionPath)
+        .doc(routineId);
+
+    await routineRef.update({
+      'exercises': FieldValue.arrayRemove([
+        {'id': exerciseId},
+      ]),
+    });
   }
 }
